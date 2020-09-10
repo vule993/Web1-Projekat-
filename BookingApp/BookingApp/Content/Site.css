@@ -1,0 +1,554 @@
+﻿/*CLASSES*/
+.glyphicon {
+    margin: 0 5px;
+}
+
+.input-group {
+    width: 300px;
+}
+
+.button {
+    text-align: center;
+    background-color: #7EB4E8;
+    color: #fff;
+}
+
+.admin-korisnik > div {
+    text-align: center;
+    width: 16.66%;
+    padding: 10px;
+    border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+.admin-korisnik > div:first-of-type {
+    border-left: 0;
+}
+
+.admin-korisnik:nth-child(odd) {
+    background-color: rgb(195, 203, 217);
+}
+
+.admin-korisnik:first-of-type {
+    background-color: rgb(126, 180, 232);
+    font-weight: bold;
+}
+
+
+
+.ohidden {
+    overflow: hidden;
+}
+
+.fleft {
+    float: left;
+}
+
+.fright {
+    float: right;
+}
+
+.cboth {
+    clear: both;
+}
+
+.jumbothron {
+    margin-top: 10px;
+}
+
+
+
+
+
+
+body {
+    /*padding-top:50px;*/
+    padding-bottom: 20px;
+    background-color: #e0e0e0;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+h2 {
+    color: #7EB4E8;
+    margin: 5px auto;
+    text-align: center;
+}
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+label {
+    margin: 5px 0;
+}
+
+label, input, select {
+    display: block;
+}
+
+
+
+#container-apartmana {
+    width: 100%;
+}
+.apartman {
+    background-color: #fff;
+    width: 960px;
+    height: 190px;
+    margin: 10px 5px;
+}
+.apartman-podaci{
+    width: 650px;
+}
+.apartman-sekcija {
+    padding: 5px 10px;
+    width: 210px;
+    height: 190px;
+}
+
+.apartman-sekcija > hr {
+    margin: 8px 0;
+}
+
+.apartman-sekcija:nth-child(even) {
+    border-left: 1px solid rgba(30,30,30,0.2);
+    border-right: 1px solid rgba(30,30,30,0.2);
+}
+
+.apartman-sekcija .listaSadrzaja > span {
+    background-color: #7EB4E8;
+    padding: 2px;
+}
+
+.apartman-sekcija > div {
+    margin: 20px auto;
+}
+
+#zakazi {
+    width: 100px;
+    text-align: center;
+}
+
+
+
+
+
+.alert {
+    position: fixed;
+    bottom: 45px;
+    width: 100%;
+    display: none;
+}
+
+#filter {
+    margin: 0 auto;
+    bottom: 0;
+    background-color: #333;
+    width: 825px;
+    height: 160px;
+}
+#filterUsers {
+    margin: 10px auto;
+    bottom: 0;
+    background-color: #333;
+    width: 825px;
+    height: 45px;
+}
+
+#filter .form-control, #filterUsers .form-control {
+    float: left;
+    margin: 5px 0 0 5px;
+    width: 200px;
+}
+
+#filter .cred, #filterUsers .cred {
+    width: 200px;
+}
+
+input[type = submit] {
+    width: 130px;
+}
+
+#filter .gj-datepicker-md [role=wrapper], #filterUsers .gj-datepicker-md[role=wrapper] {
+    width: 200px;
+}
+
+#filter .gj-picker, #filterUsers .gj-picker {
+    position: fixed;
+    bottom: 45px;
+    height: auto;
+}
+#filter .gj-icon, #filterUsers .gj-icon{
+    left: 180px;
+    top: 10px;
+}
+#filter .gj-datepicker-md, #filterUsers .gj-datepicker-md {
+    float: left;
+    overflow: hidden;
+}
+#filter .button, #filterUsers .button{
+    width: 200px;
+    float: right;
+    margin-right: 5px;
+}
+
+#filter #container-itema {
+    width: 610px;
+    height: 34px;
+    background-color: #fff;
+    margin: 5px 0 0 5px;
+    padding: 6px 12px;
+}
+#stavka {
+    background-color: #7EB4E8;
+    padding: 3px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Login*/
+#login {
+    margin: 100px auto;
+    width: 386px;
+    padding: 50px;
+}
+
+#login > h2, #registration > h2, #add-apartment > h2 {
+    color: #7EB4E8;
+    margin: 5px auto;
+    text-align: center;
+}
+
+#login input[type = submit] {
+    margin: 10px 5px 0 0;
+    width: 120px;
+}
+
+/*registration*/
+#registration > #login-fields {
+    margin: 20px 60px;
+    padding: 0 100px;
+}
+
+#registration > #login-fields > div {
+    width: 280px;
+}
+
+#btnLogin {
+    margin-top: 10px;
+    margin-right: 35px;
+    width: 120px;
+}
+/*add-apartment*/
+#add-apartment {
+    width: 1190px;
+    margin: 0 auto;
+}
+
+#add-apartment > #login-fields > div {
+    width: 355px;
+    margin-top: 40px;
+    padding: 0 30px;
+}
+
+#add-apartment > #login-fields > div:nth-child(even) {
+    border-left: 1px solid rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(0,0,0,0.2);
+}
+
+#add-apartment .gj-datepicker-md [role=right-icon] {
+    top: 5px;
+}
+
+.vreme-za-prijavu {
+    width: 75px !important;
+    float: left;
+}
+
+#login-fields > div > div {
+    float: left;
+    overflow: hidden;
+}
+
+#login-fields > div > div > div {
+    float: left;
+    padding: 7px 4px;
+}
+#add-apartment label,#add-apartment input[ty], #add-apartment select, .timePicker {
+    display: block;
+    float: left;
+}
+
+/*pojedinacni apartman*/
+#data{
+    width: 960px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color:#fff;
+}
+#images{
+    height: 175px;
+    overflow:hidden;
+}
+#images > img{
+    margin: 10px;
+}
+
+#data > #sadrzaj-apartmana {
+    padding: 20px;
+}
+
+#data > #sadrzaj-apartmana > span {
+    margin: 5px;
+    padding: 5px;
+    background-color: #7EB4E8;
+}
+#data h3{
+    color: #7EB4E8;
+}
+#data #opsti-podaci > div {
+    width: 290px;
+    padding: 0 20px;
+    font-weight: bold;
+}
+#data #opsti-podaci > div  span {
+    font-weight: normal;
+    float: right;
+}
+#data #opsti-podaci > div:nth-child(even){
+    border-left: 1px solid rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(0,0,0,0.2);
+}
+#cena{
+    margin: 10px 0;
+    vertical-align: middle;
+}
+#cena span{
+    font-size: 26px;
+    font-weight: bold;
+    color: #7EB4E8;
+}
+#komentari{
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    margin: 20px 0;
+}
+#komentari .button{
+    width: 130px;
+}
+.komentar{
+    width: 95%;
+    margin: 10px auto;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+#dodaj-komentar{
+    margin: 0 auto;
+    background-color:#ddd;
+    height: 40px;
+    width: 95%;
+}
+.komentar div {
+    width: 75%;
+}
+    .komentar div:first-of-type {
+        width: 20%;
+        text-align: center;
+        border-right: 1px solid rgba(0,0,0,0.2);
+    }
+#dodaj-komentar textarea{
+    min-width: 580px;
+    max-width: 580px;
+    height: 30px;
+    margin: 5px;
+    border: 1px solid #7EB4E8;
+}
+#dodaj-komentar .button{
+    width: 100px !important; 
+    text-align: center;
+    margin: 2px;
+}
+#dodaj-komentar .form-control{
+    width: 100px;
+    margin: 2px;
+}
+
+
+#rezervacija .gj-datepicker-md [role=right-icon] {
+    top: 5px;
+}
+#rezervacija #ukupna-cena{
+    width: 220px;
+    text-align: center;
+    padding: 4px;
+}
+#rezervacija #rezervisi-dugme{
+    width: 130px;
+    text-align:center;
+}
+.apartman-sekcija .button{
+    width: 55px;
+    padding: 5px 0;
+}
+
+
+#rezervacije .rez{
+    background-color: #ddd;
+    padding: 5px;
+    width: 400px;
+    height: 262px;
+    margin: 10px;
+}
+.dugmici > .button{
+    width: 130px;
+}
+.rez > div:first-child{
+    text-align: center;
+}
+
+.apartman-podaciApartmana{
+    width: 100%;
+}
+.opsti-podaci {
+    width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+.opsti-podaci span{
+    font-weight: bold;
+}
+.korisnik-podaci {
+    width: 100%;
+}
+
+
+/*admin - spisak korisnika*/
+.message {
+    position: relative;
+    top: -20px;
+}
+
+#sadrzaj-apartmana > div {
+    margin: 10px 0;
+}
+
+#sadrzaj-apartmana > div > span {
+    background-color: #7EB4E8;
+    padding: 3px;
+}
+
+
+#sadrzaj-praznika > div {
+    margin: 10px 0;
+}
+
+    #sadrzaj-praznika > div > span {
+        background-color: #7EB4E8;
+        padding: 3px;
+    }
+
+
+
+
+
+
+/**/
+
+.preview-images-zone {
+    width: 100%;
+    border: 1px solid #ddd;
+    position: relative;
+    overflow: auto;
+}
+
+.preview-images-zone > .preview-image:first-child {
+    width: 185px;
+    position: relative;
+    margin-right: 5px;
+}
+
+.preview-images-zone > .preview-image {
+    width: 90px;
+    position: relative;
+    margin-right: 5px;
+    float: left;
+    margin-bottom: 5px;
+}
+
+.preview-images-zone > .preview-image > .image-zone {
+    width: 100%;
+    height: 100%;
+}
+
+.preview-images-zone > .preview-image > .image-zone > img {
+    width: 100%;
+    height: 100%;
+}
+
+.preview-images-zone > .preview-image > .tools-edit-image {
+    position: absolute;
+    z-index: 100;
+    color: #fff;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.preview-images-zone > .preview-image > .image-cancel {
+    font-size: 18px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-weight: bold;
+    margin-right: 10px;
+    cursor: pointer;
+    display: none;
+    z-index: 100;
+}
+
+.preview-image:hover > .image-zone {
+    cursor: move;
+    opacity: .5;
+}
+
+.preview-image:hover > .tools-edit-image,
+.preview-image:hover > .image-cancel {
+    display: block;
+}
+
+.ui-sortable-helper {
+    width: 90px !important;
+    height: 90px !important;
+}
+
+.container {
+    width: 100%;
+    padding: 0;
+    padding-top: 10px;
+    margin: 0;
+}

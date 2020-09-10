@@ -1,0 +1,925 @@
+﻿
+@{
+    ViewBag.Title = "Korisnici";
+}
+
+<!--skripte za odobravanje / zabranu oglasa i izmenu/blokiranje korisnika-->
+<script>
+    var errorDiv = $(".alert");
+    var message = $(".alert > div");
+    function prihvatiApartman(id) {
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:57327/api/oglasi/odobriApartman',
+            dataType: 'json',
+            data: {
+                Id: id
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+    function zabraniApartman(id) {
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:57327/api/oglasi/zabraniApartman',
+            dataType: 'json',
+            
+            data: {
+                Id: id
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+
+    function pretvoriUDomacina(id) {
+        $.ajax({
+            type: 'Get',
+            url: 'http://localhost:57327/api/korisnici/',
+            dataType: 'json',
+            data: {
+                Id: id
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+
+    function blokirajKorisnika(id) {
+        $.ajax({
+            type: 'Get',
+            url: 'http://localhost:57327/api/korisnici/blok',
+            dataType: 'json',
+            data: {
+                Id: id
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+
+    //iscitavanje postojecih korisnika
+
+    function ucitajSve() {
+        //glyphicon-pencil
+        //glyphicon-remove
+
+
+        var token = sessionStorage.getItem("token");
+        $.ajax({
+            type: 'GET',
+            url: 'http://' + window.location.host + '/api/korisnici',
+            dataType: 'json',
+            success: function (data) {
+                $("#admin-korisnici").empty();
+
+                $("#admin-korisnici").append(`
+                        <div class='admin-korisnik ohidden'>
+                            <div class='fleft'>
+                                Index
+                            </div>
+                            <div class='fleft'>
+                                Ime
+                            </div>
+                            <div class='fleft'>
+                                Prezime
+                            </div>
+                            <div class='fleft'>
+                                Korisnicko ime
+                            </div>
+                            <div class='fleft'>
+                                Pol
+                            </div>
+                            <div class="fleft">
+                                Operacije
+                            </div>
+                        </div>
+                    `);
+
+
+                $.each(data, function (index, obj) {
+                    $("#admin-korisnici").append(`
+                        <div class='admin-korisnik ohidden'>
+                            <div class='fleft'>
+                                ${obj.Id}
+                            </div>
+                            <div class='fleft'>
+                                ${obj.Ime}
+                            </div>
+                            <div class='fleft'>
+                                ${obj.Prezime}
+                            </div>
+                            <div class='fleft'>
+                                ${obj.KorisnickoIme}
+                            </div>
+                            <div class='fleft'>
+                                ${obj.Pol}
+                            </div>
+                            <div class="fleft">
+                                <span class="glyphicon glyphicon-pencil" onclick="pretvoriUDomacina(${obj.Id})">Domacin</span>
+                                <span class="glyphicon glyphicon-remove" onclick="blokirajKorisnika(${obj.Id})">Blokiraj</span>
+                            </div>
+                        </div>
+                    `);
+
+                    
+
+                });
+
+            },
+            error: function (jqXHR) {
+
+            }
+
+        });
+
+
+
+
+        setTimeout(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://' + window.location.host + '/api/items',
+                dataType: 'json',
+                success: function (data1) {
+                    $("#sadrzaj-apartmana > div").empty();
+                    $.each(data1, function (index, obj1) {
+                        $("#sadrzaj-apartmana > div").append(`
+                        <span class="item">${obj1.Naziv}<span onclick="ukloniItem(${obj1.Id})" class="glyphicon glyphicon-remove"></span></span>
+                    `);
+                    });
+
+                },
+                error: function (jqXHR) {
+
+                }
+
+            });
+        }, 50);
+
+
+
+
+        //ucitaj praznike
+
+
+        setTimeout(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'http://' + window.location.host + '/api/praznici',
+                dataType: 'json',
+                success: function (data1) {
+                    $("#sadrzaj-praznika > div").empty();
+                    $.each(data1, function (index, obj1) {
+                        $("#sadrzaj-praznika > div").append(`
+                        <span class="item">${obj1.Dan}<span onclick="ukloniPraznik(${obj1.Id})" class="glyphicon glyphicon-remove"></span></span>
+                    `);
+                    });
+
+                },
+                error: function (jqXHR) {
+
+                }
+
+            });
+        }, 50);
+
+    }
+
+
+
+
+    $(document).ready(ucitajSve());
+
+
+    //za uklanjanje praznik-a iz kolekcije
+    function ukloniPraznik(id) {
+        var errorDiv = $(".alert");
+        var message = $(".alert > div");
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:57327/api/praznici/' + id,
+            dataType: 'json',
+            success: function (data) {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Uspesno ste se uklonili item!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+                ucitajSve();
+            },
+
+            error: function (jqXHR) {
+
+                if (jqXHR.status == '401') {
+                    errorDiv.removeClass('alert-success');
+                    errorDiv.addClass("alert-danger");
+                    message.text('Item neuspesno uklonjen!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        errorDiv.fadeOut(3000);
+                    }, 5000);
+
+                }
+
+
+            }
+        });
+    }
+
+
+
+
+    //za uklanjanje item-a iz kolekcije
+    function ukloniItem(id) {
+        var errorDiv = $(".alert");
+        var message = $(".alert > div");
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:57327/api/items/' + id,
+            dataType: 'json',
+            success: function (data) {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Uspesno ste se uklonili item!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+                ucitajSve();
+            },
+
+            error: function (jqXHR) {
+
+                if (jqXHR.status == '401') {
+                    errorDiv.removeClass('alert-success');
+                    errorDiv.addClass("alert-danger");
+                    message.text('Item neuspesno uklonjen!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        errorDiv.fadeOut(3000);
+                    }, 5000);
+
+                }
+
+
+            }
+        });
+    }
+
+
+
+    //dodaj praznik
+    $('body').on('click', '#btnDodajp', function () {
+        var errorDiv = $(".alert");
+        var message = $(".alert > div");
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:57327/api/praznici',
+            data: {
+                Dan: $("#datepicker").val()
+            },
+            success: function () {
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Uspesno dodat item!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+                ucitajSve();
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status == '401') {
+                    errorDiv.removeClass('alert-success');
+                    errorDiv.addClass("alert-danger");
+                    message.text('Praznik neuspesno dodat!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        errorDiv.fadeOut(3000);
+                    }, 5000);
+
+
+
+
+                }
+
+            }
+
+
+
+
+
+        });
+
+    });
+
+
+    //dodaj item
+    $('body').on('click', '#btnDodaj', function () {
+        var errorDiv = $(".alert");
+        var message = $(".alert > div");
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:57327/api/items',
+            data: {
+                Naziv: $("#naziv").val()
+            },
+            success: function () {
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Uspesno dodat item!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+                ucitajSve();
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status == '401') {
+                    errorDiv.removeClass('alert-success');
+                    errorDiv.addClass("alert-danger");
+                    message.text('Item neuspesno dodat!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        errorDiv.fadeOut(3000);
+                    }, 5000);
+
+                    
+
+
+                }
+
+            }
+
+
+
+
+
+        });
+
+    });
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+<div class="alert ohidden" role="alert">
+    <div class="fleft">
+        asd
+    </div>
+    <button type="button" class="close fright" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<h2>Sadrzaj apartmana</h2>
+
+<div id="sadrzaj-apartmana">
+    <!--<span class="item"></span>-->
+    <form class="ohidden" method="post">
+        <input type="text" id="naziv" class="fleft"/>
+        <button type="button" id="btnDodaj">
+            Dodaj novu stavku
+        </button>
+    </form>
+    <div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="sadrzaj-praznika">
+    <!--<span class="item"></span>-->
+    <form class="ohidden" method="post">
+        <input id="datepicker" class="fleft form-control" value="unesi praznik" />
+        <button type="button" id="btnDodajp">
+            Dodaj praznik
+        </button>
+    </form>
+    <div></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2>Korisnici</h2>
+
+<div id="filterUsers">
+
+
+
+    <select class="form-control" id="uloga">
+        <option value="*">Uloga</option>
+        <option value="admin">Admin</option>
+        <option value="gost">Gost</option>
+        <option value="domacin">Domacin</option>
+
+    </select>
+
+    <select class="form-control" id="pol">
+        <option value="*">Pol</option>
+        <option value="muski">Muski</option>
+        <option value="zenski">Zenski</option>
+        
+
+    </select>
+
+    <input class="form-control" id="korisnickoIme" placeholder="korisnicko ime" />
+
+
+    <input type="submit" class="form-control button" id="filter-btn" value="Pretrazi" />
+</div>
+
+
+
+
+
+<script>
+    //za filtriranje korisnika
+    $("#filter-btn").click(function () {
+        var token = sessionStorage.getItem("token");
+        $("#admin-korisnici").empty();
+        $.ajax({
+            type: 'Put',
+            url: 'http://localhost:57327/api/pretraga/korisnika',
+            dataType: 'json',
+            data: {
+                korisnickoIme: $("#korisnickoIme").val(),
+                pol: $("#pol").val(),
+                uloga: $("#uloga").val(),
+            },
+            success: function (data1) {
+                $("#admin-korisnici").empty();
+
+                $("#admin-korisnici").append(`
+                        <div class='admin-korisnik ohidden'>
+                            <div class='fleft'>
+                                Index
+                            </div>
+                            <div class='fleft'>
+                                Ime
+                            </div>
+                            <div class='fleft'>
+                                Prezime
+                            </div>
+                            <div class='fleft'>
+                                Korisnicko ime
+                            </div>
+                            <div class='fleft'>
+                                Pol
+                            </div>
+                            <div class="fleft">
+                                Operacije
+                            </div>
+                        </div>
+                    `);
+
+
+                $.each(data1, function (index, obj) {
+                    $("#admin-korisnici").append(`
+                        <div class='admin-korisnik ohidden'>
+                            <div class='fleft'>
+                                ${obj.Id}
+                            </div>
+                            <div class='fleft'>
+                                ${obj.Ime}
+                            </div>
+                            <div class='fleft'>
+                                ${obj.Prezime}
+                            </div>
+                            <div class='fleft'>
+                                ${obj.KorisnickoIme}
+                            </div>
+                            <div class='fleft'>
+                                ${obj.Pol}
+                            </div>
+                            <div class="fleft">
+                                <span class="glyphicon glyphicon-pencil" onclick="pretvoriUDomacina(${obj.Id})">Domacin</span>
+                                <span class="glyphicon glyphicon-remove" onclick="blokirajKorisnika(${obj.Id})">Blokiraj</span>
+                            </div>
+                        </div>
+                    `);
+
+
+
+                });
+
+            },
+            error: function (jqXHR) {
+
+            }
+        });
+    
+
+    });
+</script>
+
+
+
+
+
+
+
+
+
+<div id="admin-korisnici">
+    <div class='admin-korisnik ohidden'>
+        <div class='fleft'>
+            Index
+        </div>
+        <div class='fleft'>
+            Ime
+        </div>
+        <div class='fleft'>
+            Prezime
+        </div>
+        <div class='fleft'>
+            Korisnicko ime
+        </div>
+        <div class='fleft'>
+            Pol
+        </div>
+        <div class="fleft">
+            Operacije
+            
+        </div>
+    </div>
+</div>
+
+
+<h2>Svi apartmani</h2>
+<div id="apartmani">
+
+
+
+
+
+</div>
+
+<script>
+
+    $('#datepicker').datepicker({
+        format: "dd-mmm-yy"
+    });
+
+
+
+    $(document).ready(function () {
+        var oglasi = $("#apartmani");
+
+        
+            oglasi.empty(); //cistimo sve do sada
+
+            var user = $("#user").val();
+            var pass = $("#pass").val();
+
+            var errorDiv = $(".alert");
+            var message = $(".alert > div");
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:57327/api/oglasi',
+                dataType: 'json',
+                headers: {
+                    'Authorization': (sessionStorage.getItem('token') != undefined) ? sessionStorage.getItem('token') : '',    //convert to base 64
+                },
+                success: function (data) {
+                    //<img src="/img/apartmani/vulemajstor/830660.jpg" width="340" />
+                    $.each(data, function (index, val) {    //index i sam objekat
+
+                        //multiline string radi boljeg pregleda
+                        oglasi.append(`
+
+                                        <div class="apartman ohidden">
+
+                                            <div class="apartman-slika fleft">
+
+                                                <img src="${val.Slike[0].Path + val.Slike[0].Name}" width="240" />
+
+                                            </div>
+
+                                            <div class="apartman-podaci fleft ohidden">
+
+                                                <div class="apartman-sekcija fleft">
+                                                    <h3>${val.Naziv}</h3>
+                                                    <span>Soba</span>
+                                                    <hr />
+                                                    <div><img src="/img/lokacija.png" height="15" />${val.Lokacija.Adresa.UlicaBroj}</div>
+                                                    <hr />
+
+                                                    <span>Ocena: ${val.Ocena}</span>
+                                                </div>
+                                                <div class="apartman-sekcija fleft">
+
+
+                                                    <h4>Lista sadrzaja:</h4>
+                                                    <span class="listaSadrzaja">
+
+                                                    </span>
+
+                                                </div>
+                                                <div class="apartman-sekcija fleft">
+                                                    <div>Cena: ${val.CenaPoNoci}e</div>
+                                                    <div>Broj soba: ${val.BrojSoba}</div>
+                                                    <div>Broj gostiju: ${val.BrojGostiju}</div>
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+
+                                `);
+                        $.each(val.ListaSadrzaja, function (index, value) {
+                            $(".apartman:last-of-type .listaSadrzaja").append(`
+                                    <span>${value.Naziv}</span>
+                                `);
+                        });
+                        $.each(val.ListaSadrzaja, function (index, value) {
+                            if (val.Slike[0] != undefined) {
+                                $(".apartman-slika:last-of-type").append(`
+                                        <img src="${val.Slike[0].Path + val.Slike[0].Name}" width="340" />
+                                    `);
+                            } else {
+                                $(".apartman-slika:last-of-type").append(`
+                                        <img src="" width="340" />
+                                    `);
+                            }
+
+                        });
+
+                        //dodajem skriptu za dugmice
+                        var skripta = document.createElement("script");
+                        skripta.innerHTML = `
+
+                                $(".apartman:last-of-type .apartman-sekcija:last-of-type #zakazi").remove();
+                                $(".apartman:last-of-type .apartman-sekcija:last-of-type a").remove();
+                                if (sessionStorage.getItem("username") != undefined && sessionStorage.getItem("username") != null) {
+                                    $(".apartman:last-of-type .apartman-sekcija:last-of-type").append('<span class="button form-control fleft" onclick="prihvatiApartman(${val.Id})">Prikazi</span>');
+                                    $(".apartman:last-of-type .apartman-sekcija:last-of-type").append('<span class="button form-control fleft" onclick="zabraniApartman(${val.Id})">Ukloni</span>');
+                                    $(".apartman:last-of-type .apartman-sekcija:last-of-type").append('<span class="button form-control fleft" onclick="izmeniApartman(${val.Id})">Izmeni</span>');
+                                } 
+
+
+
+                                function zakazi(id) {
+                                    window.location.assign("http://localhost:57327/Home/Apartman/"+id);
+                                }
+
+
+                            `;
+
+
+                        document.body.appendChild(skripta);
+
+
+                    });
+                    
+                },
+
+                error: function (jqXHR) {
+
+                    if (jqXHR.status == '401') {
+                        errorDiv.removeClass('alert-success');
+                        errorDiv.addClass("alert-danger");
+                        message.text('Username i password se ne poklapaju! Prijava neuspesna!');
+
+                        //errorDiv.css({ 'display': 'block' });
+                        errorDiv.fadeIn(1500);
+
+                        //gasi obavestenje
+                        setTimeout(function () {
+                            //errorDiv.css({ 'display': 'none' });
+                            errorDiv.fadeOut(3000);
+                        }, 5000);
+
+                    }
+
+
+                }
+
+
+            });
+
+        
+
+    });
+
+
+
+
+
+</script>

@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Logout";
+}
+
+<h2>Logging out...</h2>
+
+<script>
+    $(document).ready(function () {
+        sessionStorage.removeItem('username');
+        sessionStorage.removeItem('password');
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('uloga');
+        sessionStorage.removeItem('token');
+        window.location.assign("Index");
+    });
+</script>

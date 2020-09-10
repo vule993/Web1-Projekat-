@@ -1,0 +1,784 @@
+﻿@{
+    ViewBag.Title = "DodajApartman";
+}
+
+<script>
+    $(document).ready(function () {
+
+
+        if (window.location.search != "") {
+
+            var id = parseInt(window.location.search.split('=')[1]);
+
+            //popunjavanje podacima + zamena dugmeta
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:57327/api/oglasi/getoglas?id=' + id,
+                dataType: 'json',
+
+                success: function (obj) {
+                    $("#naziv").val(obj.Naziv);
+
+
+                    apartman = obj;
+
+
+                    $("#tip").val(obj.TipApartmana);
+                    $("#brojSoba").val(obj.BrojSoba);
+                    $("#brojGostiju").val(obj.BrojGostiju);
+
+                    $("#cena").val(obj.CenaPoNoci);
+
+                    $("#datepicker").val(obj.DatumiZaIzdavanje[0].Dan);     //dostupan od
+                    $("#datepicker1").val(obj.DatumiZaIzdavanje.slice(-1)[0].Dan);    //dostupan do
+
+
+
+                    $("#prijavaSat").val(obj.VremeZaPrijavu.split(':')[0]);
+                    $("#prijavaMinut").val(obj.VremeZaPrijavu.split(':')[1]);
+
+
+                    $("#odjavaSat").val(obj.VremeZaOdjavu.split(':')[0]);
+                    $("#odjavaMinut").val(obj.VremeZaOdjavu.split(':')[1]);
+
+                    $.each(obj.ListaSadrzaja, function (i, val) {
+                        document.querySelector('#cb' + nizIdItem[i]).checked = true;
+                    });
+
+                    $("#ulica").val(obj.Lokacija.Adresa.UlicaBroj);
+                    $("#postanskiBroj").val(obj.Lokacija.Adresa.PostanskiBroj);
+                    $("#mesto").val(obj.Lokacija.Adresa.NaseljenoMesto);
+
+
+                    $("#btnLogin").css({ 'display': 'none' });
+                    $("#add - apartment > #login - fields > div > .container").css({ 'display': 'none' });
+                    $("#add-apartment").append(`
+                        <input id="btnChange" type="submit" class="form-control button fright" value="Izmeni apartman" />
+                    `);
+
+
+                },
+
+                error: function (jqXHR) {
+
+                }
+
+
+            });
+        }
+    });
+</script>
+
+
+
+<div id="add-apartment" class="jumbotron ohidden">
+
+    <h2>Dodaj apartman</h2>
+
+    <div id="login-fields" class="ohidden">
+        <div class="fleft">
+            <label>Naziv:</label>
+            <input id="naziv" type="text" class="form-control" name="naziv" />
+
+            <label>Tip:</label>
+            <select name="tip" class="form-control" id="tip">
+                <option value="*">Izaberite</option>
+                <option value="soba">Soba</option>
+                <option value="apartman">Apartman</option>
+                <option value="kuca">Kuca</option>
+            </select>
+
+
+            <label>Broj soba:</label>
+            <input id="brojSoba" type="number" pattern="\d+" class="form-control" name="brojSoba" />
+
+            <label>Broj gostiju:</label>
+            <input id="brojGostiju" type="number" pattern="\d+" class="form-control" name="brojGostiju" />
+
+            <label>Cena po noci:</label>
+            <input id="cena" type="number" pattern="\d+" class="form-control" name="cena" />
+
+
+
+
+
+
+            <!--sadrzaj-->
+
+            <div id="checkbox" class="ohidden">
+                <label>Sadrzaj apartmana:</label>
+            </div>
+
+
+            <script>
+
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:57327/api/items',
+                    dataType: 'json',
+                    success: function (data) {
+
+                        brojItema = 0;
+                        nizIdItem = [];
+                        $.each(data, function (index, val) {
+                            //multiline string radi boljeg pregleda
+                            $("#checkbox").append(`
+                                                <div class='fleft cboth'><input type="checkbox" class='fleft' id="cb${val.Id}" value="${val.Naziv}" /><span class='fright'>${val.Naziv}</span></div>
+                                            `);
+                            nizIdItem[brojItema++] = val.Id;
+                        });
+
+                    },
+                    error: function (jqXHR) {
+
+                    }
+
+
+                });
+            </script>
+
+
+
+
+
+
+
+
+        </div>
+
+        <div class="fleft ohidden">
+
+
+            <label>Apartman dostupan od:</label>
+
+            <input id="datepicker" class="form-control" value="slobodno od" width="190" />
+
+            <label>Apartman dostupan do:</label>
+
+            <input id="datepicker1" class="form-control" value="slobodno do" width="190" />
+
+
+
+            <label>Vreme za prijavu:</label>
+
+            <div class="timePicker">
+                <select name="prijavaSat" id="prijavaSat" class="form-control vreme-za-prijavu">
+                    @for (var i = 0; i < 24; i++)
+                    {
+                        if (i < 10)
+                        {
+                            <option value="@i">0@(i)</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                </select><div>H</div>
+
+                <select name="prijavaMin" id="prijavaMinut" class="form-control vreme-za-prijavu">
+                    @for (var i = 0; i < 60; i++)
+                    {
+                        if (i < 10)
+                        {
+                            <option value="@i">0@(i)</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                </select><div>M</div>
+
+            </div>
+
+
+
+            <label>Vreme za odjavu:</label>
+
+            <div class="timePicker">
+                <select name="odjavaSat" id="odjavaSat" class="form-control vreme-za-prijavu">
+                    @for (var i = 0; i < 24; i++)
+                    {
+                        if (i < 10)
+                        {
+                            <option value="@i">0@(i)</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                </select><div>H</div>
+
+
+
+                <select name="odjavaMin" id="odjavaMinut" class="form-control vreme-za-prijavu">
+                    @for (var i = 0; i < 60; i++)
+                    {
+                        if (i < 10)
+                        {
+                            <option value="@i">0@(i)</option>
+                        }
+                        else
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                </select><div>M</div>
+
+
+
+
+               
+
+                
+
+
+
+
+
+            </div>
+
+
+
+
+            <!--
+
+    <div class="timePicker">
+
+
+        <div>
+            <select name="prijavaMin" id="prijavaMinut" class="form-control vreme-za-prijavu">
+                @for (var i = 0; i < 60; i++)
+                {
+                    if (i < 10)
+                    {
+                        <option value="@i">0@(i)</option>
+                    }
+                    else
+                    {
+                        <option value="@i">@i</option>
+                    }
+                }
+            </select><div>M</div>
+        </div>
+    </div>
+
+
+
+
+
+
+    -->
+            <!--Deo koda dodat za prikaz dodatih slika-->
+            <div class="container">
+                <fieldset class="form-group">
+                    <a href="javascript:void(0)" onclick="$('#pro-image').click()">Dodaj fotografije apartmana</a>
+                    <input type="file" id="pro-image" name="pro-image" style="display: none;" class="form-control" multiple>
+                </fieldset>
+                <div class="preview-images-zone">
+                    <div class="preview-image preview-show-1">
+                    </div>
+
+                </div>
+            </div>
+            <!--
+    problem zbog datepicker-a, ali ova linija je deo image load-er-a
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    -->
+
+        </div>
+
+        <div class="fleft">
+            <label>Ulica:</label>
+            <input id="ulica" type="text" class="form-control" name="ulica" />
+
+            <label>Postanski broj:</label>
+            <input id="postanskiBroj" type="text" class="form-control" name="postanskiBroj" />
+
+            <label>Naseljeno mesto:</label>
+            <input id="mesto" type="text" class="form-control" name="mesto" />
+
+
+
+            <!--????????????????????????????????-->
+
+
+
+            <div style="width: 290px; height: 180px" id="mapContainer"></div>
+            <script>
+                // Initialize the platform object:
+                var platform = new H.service.Platform({
+                    'apikey': '5Fme0Pxh6-mJ09YH_ST3HrfSGfX_scEstdHoTdUsJf8'
+                });
+
+                // Obtain the default map types from the platform object
+                var maptypes = platform.createDefaultLayers();
+
+                // Instantiate (and display) a map object:
+                var map = new H.Map(
+                    document.getElementById('mapContainer'),
+                    maptypes.vector.normal.map,
+                    {
+                        zoom: 11,
+                        center: { lng: 13.4, lat: 52.51 }
+                    });
+            </script>
+
+            <!---->
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <input id="btnLogin" type="submit" class="form-control button fright" value="Dodaj apartman" />
+
+
+    <div class="alert ohidden" role="alert">
+        <div class="fleft">
+            <!--ovde ide poruka o gresci-->
+        </div>
+        <button type="button" class="close fright" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div id="error-message">
+
+    </div>
+
+</div>
+
+<script>
+
+    //ovo je potrebno kao temp promenljiva, jer se nakon linije picReader.readAsDataURL(file); koja omogucava
+    //iscrtavanje tj prikaz slika koje korisnik zeli da upload-uje cisti filelist, pa mu se ne moze pristupiti
+    //prilikom samog upload-ovanja na server
+    var dodateSlike = [];
+    var ukupnoSlika = 0;
+
+    //unsetovanje, ponistavanje dodatih slika
+    $(document).ready(function () {
+        document.getElementById('pro-image').addEventListener('change', readImage, false);
+
+        //$(".preview-images-zone").sortable();
+
+        $(document).on('click', '.image-cancel', function () {
+            let no = $(this).data('no');
+            $(".preview-image.preview-show-" + no).remove();
+            dodateSlike[no] = 0;    //setujemo na broj, prilikom upload-a zanemarujemo sve sto nije file
+        });
+    });
+
+
+    //skripta za prikazivanje slika koje ce biti upload-ovane
+    var num = 0;    //za enumeraciju slika, sluzi za brisanje iz niza slika za uploadovanje
+    function readImage() {
+        if (window.File && window.FileList && window.FileReader) {
+            var files = event.target.files; //FileList object
+            var output = $(".preview-images-zone");
+
+            for (let i = 0; i < files.length; i++) {
+                var file = files[i];
+                dodateSlike[ukupnoSlika++] = file;
+
+                if (!file.type.match('image')) continue;
+                
+                var picReader = new FileReader();
+
+                picReader.addEventListener('load', function (event) {
+                    var picFile = event.target;
+                    var html = '<div class="preview-image preview-show-' + num + '">' +
+                        '<div class="image-cancel" data-no="' + num + '">x</div>' +
+                        '<div class="image-zone"><img id="pro-img-' + num + '" src="' + picFile.result + '"></div>' +
+                        '</div>';
+
+                    output.append(html);
+                    num = num + 1;
+                });
+
+                picReader.readAsDataURL(file);
+            }
+            $("#pro-image").val('');
+        } else {
+            console.log('Browser not support');
+        }
+    }
+
+
+
+    //upload svih podataka + slike
+    $(document).ready(function () {
+
+        $('body').on('click', '#btnLogin', function () {
+
+            if (window.File && window.FileList && window.FileReader) {
+                var files = event.target.files; //FileList object
+                //upload slika, koliko ih vec ima
+                for (let i = 0; i < ukupnoSlika; i++) {
+                    var file = dodateSlike[i];
+
+                    if (file == 0) continue;    // ovo omogucava brisanje, obrisanu sliku zamenicemo brojem
+                    if (!file.type.match('image')) continue;
+                    //ubaceno naknadno
+                    var data = new FormData();
+                    data.append(sessionStorage.getItem('username'), file);
+                    $.ajax({
+                        url: '/Api/File/Upload',
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        type: 'POST'
+                    }).done(function (result) {
+                        //alert(result);
+                    }).fail(function (a, b, c) {
+                        console.log(a, b, c);
+                    });
+                }
+            }
+
+            //kupljenje podataka i slanje kontroleru zaduzenom za kreiranje objekta klase Apartman
+            var naziv = $("#naziv").val();
+            var tip = $("#tip").val();
+            var brojSoba = $("#brojSoba").val();
+            var brojGostiju = $("#brojGostiju").val();
+            var cena = $("#cena").val();
+            var dostupanOd = $("#datepicker").val();     //dostupan od
+            var dostupanDo = $("#datepicker1").val();    //dostupan do
+            var prijavaSat = $("#prijavaSat").val();
+            var prijavaMin = $("#prijavaMinut").val();
+            var odjavaSat = $("#odjavaSat").val();
+            var odjavaMin = $("#odjavaMinut").val();
+            var slike = []; //globalna
+            var brojac = 0;
+            dodateSlike.forEach(function (img) {
+                var slika = {};
+                slika.Name = img.name;
+                slika.Path = "/img/apartmani/" + sessionStorage.getItem("username") + "/";
+
+                slike[brojac++] = slika;
+                //alert(slike[brojac - 1]);
+            });
+
+            brojac = 0;
+
+
+            var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            var dostupniDatumi = [];
+
+
+            var krajnji = new Date(dostupanDo);
+
+            for (var pocetni = new Date(dostupanOd); pocetni < krajnji; pocetni.setDate(pocetni.getDate() + 1)) {
+                if (pocetni.getDate() < 10) {
+                    dostupniDatumi[brojac++] = { Dan: '0' + pocetni.getDate() + '-' + monthNames[pocetni.getMonth()] + '-' + pocetni.getFullYear().toString().substr(-2) };
+                } else {
+                    dostupniDatumi[brojac++] = { Dan: pocetni.getDate() + '-' + monthNames[pocetni.getMonth()] + '-' + pocetni.getFullYear().toString().substr(-2) };
+                }
+            }
+
+
+            brojac = 0;
+            var izabraniItemi = [];
+            for (var i = 0; i < brojItema; i++) {
+                if (document.querySelector('#cb' + nizIdItem[i]).checked) {
+                    var item = {};
+                    item.Naziv = $('#cb' + nizIdItem[i]).val();
+                    izabraniItemi[brojac++] = item;
+                }
+
+            }
+
+            var ulica = $("#ulica").val();
+            var postanskiBroj = $("#postanskiBroj").val();
+            var mesto = $("#mesto").val();
+            //preuzimanje naziva slika 
+
+            var errorDiv = $(".alert");
+            var message = $(".alert > div");
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:57327/api/oglasi',
+                dataType: 'json',
+                data: {
+                    Naziv: naziv,
+                    TipApartmana: tip,
+                    BrojSoba: brojSoba,
+                    BrojGostiju: brojGostiju,
+                    Lokacija: {
+                        GeografskaSirina: "",
+                        GeografskaDuzina: "",
+                        Adresa: {
+                            UlicaBroj: ulica,
+                            NaseljenoMesto: mesto,
+                            PostanskiBroj: postanskiBroj
+                        }
+                    },
+                    DatumiZaIzdavanje: dostupniDatumi,
+                    DostupnostPoDatumima: dostupniDatumi,
+                    Domacin: {
+                        Id: sessionStorage.getItem('userId')
+                    },
+                    Komentari: null,
+                    Slike: slike,
+                    CenaPoNoci: cena,
+                    Ocena: 4.43,
+                    VremeZaPrijavu: prijavaSat + ":" + prijavaMin,
+                    VremeZaOdjavu: odjavaSat + ":" + odjavaMin,
+                    Status: false,
+                    ListaSadrzaja: izabraniItemi,
+                    ListaRezervacija: null
+                },
+                success: function () {
+
+                    errorDiv.removeClass("alert-danger");
+                    errorDiv.addClass('alert-success');
+                    message.text('Uspesno ste se registrovali na sistem!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        //errorDiv.fadeOut(3000);
+                        window.location.assign("http://localhost:57327");
+                    }, 5000);
+
+                },
+
+                error: function (jqXHR) {
+                    errorDiv.removeClass('alert-success');
+                    errorDiv.addClass("alert-danger");
+                    message.text('Greska pri prosledjivanju podataka forme!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        errorDiv.fadeOut(3000);
+                    }, 5000);
+
+                }
+
+
+            });
+
+        });
+
+
+        //izmena podataka
+
+        $('body').on('click', '#btnChange', function () {
+
+            if (window.File && window.FileList && window.FileReader) {
+                var files = event.target.files; //FileList object
+                //upload slika, koliko ih vec ima
+                for (let i = 0; i < ukupnoSlika; i++) {
+                    var file = dodateSlike[i];
+
+                    if (file == 0) continue;    // ovo omogucava brisanje, obrisanu sliku zamenicemo brojem
+                    if (!file.type.match('image')) continue;
+                    //ubaceno naknadno
+                    var data = new FormData();
+                    data.append(sessionStorage.getItem('username'), file);
+                    $.ajax({
+                        url: '/Api/File/Upload',
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        type: 'POST'
+                    }).done(function (result) {
+                        //alert(result);
+                    }).fail(function (a, b, c) {
+                        console.log(a, b, c);
+                    });
+                }
+            }
+
+            //kupljenje podataka i slanje kontroleru zaduzenom za kreiranje objekta klase Apartman
+            var naziv = $("#naziv").val();
+            var tip = $("#tip").val();
+            var brojSoba = $("#brojSoba").val();
+            var brojGostiju = $("#brojGostiju").val();
+            var cena = $("#cena").val();
+            var dostupanOd = $("#datepicker").val();     //dostupan od
+            var dostupanDo = $("#datepicker1").val();    //dostupan do
+            var prijavaSat = $("#prijavaSat").val();
+            var prijavaMin = $("#prijavaMinut").val();
+            var odjavaSat = $("#odjavaSat").val();
+            var odjavaMin = $("#odjavaMinut").val();
+            var slike = []; //globalna
+            var brojac = 0;
+            dodateSlike.forEach(function (img) {
+                var slika = {};
+                slika.Name = img.name;
+                slika.Path = "/img/apartmani/" + sessionStorage.getItem("username") + "/";
+
+                slike[brojac++] = slika;
+                //alert(slike[brojac - 1]);
+            });
+
+            brojac = 0;
+
+
+            var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+            var dostupniDatumi = [];
+
+
+
+
+
+            var krajnji = new Date(dostupanDo);
+
+            for (var pocetni = new Date(dostupanOd); pocetni < krajnji; pocetni.setDate(pocetni.getDate() + 1)) {
+                if (pocetni.getDate() < 10) {
+                    dostupniDatumi[brojac++] = { Dan: '0' + pocetni.getDate() + '-' + monthNames[pocetni.getMonth()] + '-' + pocetni.getFullYear().toString().substr(-2) };
+                } else {
+                    dostupniDatumi[brojac++] = { Dan: pocetni.getDate() + '-' + monthNames[pocetni.getMonth()] + '-' + pocetni.getFullYear().toString().substr(-2) };
+                }
+            }
+
+
+            brojac = 0;
+            var izabraniItemi = [];
+            for (var i = 0; i < brojItema; i++) {
+                if (document.querySelector('#cb' + nizIdItem[i]).checked) {
+                    var item = {};
+                    item.Naziv = $('#cb' + nizIdItem[i]).val();
+                    izabraniItemi[brojac++] = item;
+                }
+
+            }
+
+            var ulica = $("#ulica").val();
+            var postanskiBroj = $("#postanskiBroj").val();
+            var mesto = $("#mesto").val();
+            //preuzimanje naziva slika 
+
+            var errorDiv = $(".alert");
+            var message = $(".alert > div");
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:57327/api/oglasi/izmeniApartman',
+                dataType: 'json',
+                data: {
+                    Id: apartman.Id,
+                    Naziv: naziv,
+                    TipApartmana: tip,
+                    BrojSoba: brojSoba,
+                    BrojGostiju: brojGostiju,
+                    Lokacija: {
+                        GeografskaSirina: "",
+                        GeografskaDuzina: "",
+                        Adresa: {
+                            UlicaBroj: ulica,
+                            NaseljenoMesto: mesto,
+                            PostanskiBroj: postanskiBroj
+                        }
+                    },
+                    DatumiZaIzdavanje: dostupniDatumi,
+                    DostupnostPoDatumima: dostupniDatumi,
+                    Domacin: {
+                        Id: sessionStorage.getItem('userId')
+                    },
+                    Komentari: null,
+                    Slike: slike,
+                    CenaPoNoci: cena,
+                    Ocena: 4.43,
+                    VremeZaPrijavu: prijavaSat + ":" + prijavaMin,
+                    VremeZaOdjavu: odjavaSat + ":" + odjavaMin,
+                    Status: false,
+                    ListaSadrzaja: izabraniItemi,
+                    ListaRezervacija: apartman.ListaRezervacija
+                },
+                success: function () {
+
+                    errorDiv.removeClass("alert-danger");
+                    errorDiv.addClass('alert-success');
+                    message.text('Uspesno ste se registrovali na sistem!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        //errorDiv.fadeOut(3000);
+                        window.location.assign("http://localhost:57327");
+                    }, 5000);
+
+                },
+
+                error: function (jqXHR) {
+                    errorDiv.removeClass('alert-success');
+                    errorDiv.addClass("alert-danger");
+                    message.text('Greska pri prosledjivanju podataka forme!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        errorDiv.fadeOut(3000);
+                    }, 5000);
+
+                }
+
+
+            });
+
+        });
+
+
+
+
+
+    });
+
+    
+
+    //skripta za datepicker klik i unklik -> fokus
+    $('#datepicker').datepicker({
+        format: "dd-mmm-yy"
+    });
+    $('#datepicker1').datepicker({
+        format: "dd-mmm-yy"
+    });
+
+    $(document).ready(function () {
+
+        //metode za tekst u okviru datuma
+        $("#datepicker").focusout(function () {
+            if ($('#datepicker').val() == "" || $('#datepicker').val() == undefined)
+                $('#datepicker').val("slobodno od");
+        });
+        $("#datepicker1").focusout(function () {
+            if ($('#datepicker1').val() == "" || $('#datepicker1').val() == undefined)
+                $('#datepicker1').val("slobodno do");
+        });
+    });
+
+
+
+
+    $(".close").click(function () {
+        $(".close").parent().css({ "display": "none" });
+    });
+
+
+</script>

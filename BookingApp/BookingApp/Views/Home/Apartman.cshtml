@@ -1,0 +1,1004 @@
+﻿
+@{
+    ViewBag.Title = "Apartman";
+}
+
+<!--odobravanje / uklanjanje komentara, odobravanje/odbijanje ponude-->
+<script>
+    var errorDiv = $(".alert");
+    var message = $(".alert > div");
+    function odobri(komentarId) {
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:57327/api/oglasi/odobri',
+            dataType: 'json',
+            data: {
+                Id: komentarId
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+    function zabrani(komentarId) {
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:57327/api/oglasi/zabrani',
+            dataType: 'json',
+            data: {
+                Id: komentarId
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+    //////////////////////////////////////////////////////
+
+
+
+    function odobriPonudu(idRez,idApartmana) {
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:57327/api/rezervacije/odobriRezervaciju',
+            dataType: 'json',
+            data: {
+                Id: idRez,
+                RezervisaniApartman: idApartmana
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+    function odbijPonudu(idRez) {
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:57327/api/rezervacije/odbijRezervaciju',
+            dataType: 'json',
+            data: {
+                Id: idRez
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+    function zavrsiPonudu(idRez) {
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:57327/api/rezervacije/zavrsiRezervaciju',
+            dataType: 'json',
+            data: {
+                Id: idRez
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+    ////
+
+    function odustaniOdRezervacije(idRez) {
+        $.ajax({
+            type: 'PUT',
+            url: 'http://localhost:57327/api/rezervacije/odustaniOdRezervacije',
+            dataType: 'json',
+            data: {
+                Id: idRez
+            },
+            success: function () {
+
+                errorDiv.removeClass("alert-danger");
+                errorDiv.addClass('alert-success');
+                message.text('Komentar odobren!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    //errorDiv.fadeOut(3000);
+                    window.location.reload();
+                }, 5000);
+
+            },
+
+            error: function (jqXHR) {
+                errorDiv.removeClass('alert-success');
+                errorDiv.addClass("alert-danger");
+                message.text('Greska pri odobravanju komentara!');
+
+                //errorDiv.css({ 'display': 'block' });
+                errorDiv.fadeIn(1500);
+
+                //gasi obavestenje
+                setTimeout(function () {
+                    //errorDiv.css({ 'display': 'none' });
+                    errorDiv.fadeOut(3000);
+                }, 5000);
+
+            }
+
+
+        });
+    }
+
+
+</script>
+
+
+
+
+
+
+
+
+<!--struktura strane HTML-->
+<div id="data">
+    <h2></h2>
+
+    <div id="images">
+
+    </div>
+
+    <div id="sadrzaj-apartmana">
+
+    </div>
+
+    <div id="opsti-podaci" class="ohidden">
+        <div class="fleft" id="karakteristike"><h3>Opste karakteristike:</h3></div>
+        <div class="fleft" id="karakteristike2">
+
+        </div>
+        <div class="fleft" id="domacin"><h3>Podaci o domacinu:</h3></div>
+    </div>
+
+    <h3>Komentari:</h3>
+    <div id="komentari" class="ohidden">
+
+
+
+
+    </div>
+
+
+    <h3>Rezervisi:</h3>
+    <div id="rezervacija">
+        <div class="ohidden">
+
+            <input id="datepicker" class="form-control fleft" value="Od" width="190" />
+            <select name="brDana" id="brDana" class="fleft form-control">
+                <option value="x">Broj dana</option>
+                @for (var i = 0; i < 15; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+
+            </select>
+            <div id="ukupna-cena" class="fleft"></div>
+            <div class="fleft button form-control" id="rezervisi-dugme">Rezervisi</div>
+        </div>
+    </div>
+
+
+    <h3>Spisak ponuda:</h3>
+    <div id="rezervacije" class="ohidden">
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!--Datepicker formater, dobavljanje podataka o apartmanu i komentari-->
+
+<script>
+
+    //datetime picker
+    //skripta za datepicker klik i unklik -> fokus
+
+    $('#datepicker').datepicker({
+        format: "dd-mmm-yy dddd"
+    });
+
+    $(document).ready(function () {
+        //metode za tekst u okviru datuma
+        $("#datepicker").focusout(function () {
+            if ($('#datepicker').val() == "" || $('#datepicker').val() == undefined)
+                $('#datepicker').val("Od");
+        });
+
+    });
+
+
+
+
+    $(document).ready(function () {
+        //ucitavanje praznika za poskupljenje
+        //ucitaj praznike
+
+        
+        
+        $.ajax({
+            type: 'GET',
+            url: 'http://' + window.location.host + '/api/praznici',
+            dataType: 'json',
+            success: function (data1) {
+                praznici = data1;
+
+            },
+            error: function (jqXHR) {
+
+            }
+
+        });
+        
+
+        var id = window.location.pathname.split("/")[3];
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:57327/api/oglasi/getoglas?id=' + id,
+            dataType: 'json',
+
+            success: function (obj) {
+
+                if (obj == null) {
+                    window.location.assign("http://localhost:57327/");
+                }
+
+
+                apartman = obj;     //globalna za dodavanje u komentare
+
+                var ocena = 0.0;
+                //slike
+                $.each(obj.Slike, function (index, val) {
+                    $("#images").append("<img src='" + val.Path + val.Name + "' width='156' />");
+                });
+                //sadrzaj
+                $.each(obj.ListaSadrzaja, function (index, val) {
+                    $("#sadrzaj-apartmana").append("<span>" + val.Naziv + "</span>");
+                });
+
+
+                //KOMENTARI
+
+
+                var userId = sessionStorage.getItem("userId");
+                var userRole = sessionStorage.getItem("uloga");
+
+                //cak i ako je ulogovan korisnik ne sme da komentarise ako nije bio gost ovde i rezervacija je zavrsena
+                $.each(obj.ListaRezervacija, function (index, val) {
+                    if ((val.Status == "ZAVRSENA" || val.Status== "ODBIJENA") && val.Gost.Id == userId) {
+                        $("#komentari").append(`
+                            <div id="dodaj-komentar" class="ohidden">
+                                <textarea class="fleft" id="textKomentara">Ostavi komentar...</textarea>
+                                <div class="fright button form-control" id="komentar-dugme">Objavi</div>
+                                <select name="ocena" id="ocena" class="fright form-control">
+                                    <option value="*">Ocena</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        `);
+                        return false;       //potrebana je samo jedna forma za unos komentara
+                    }
+                });
+
+                if (userRole == "admin" || obj.Domacin.Id == userId) {
+                    //u slucaju da je admin ili domacin ovog apartmana prikazi dugme za izmenu
+
+                    $("#data").prepend(`
+
+                        <div class="fleft button form-control" id="izmeni">Izmeni</div>
+
+                    `);
+
+                    $("#izmeni").click(function () {
+
+                        window.location.assign('http://localhost:57327/Home/DodajApartman?id=' + obj.Id);
+
+                    });
+
+                }
+
+
+                var brojOcena = 0;
+                $.each(obj.Komentari, function (index, val) {
+                    ocena += val.Ocena;
+                    brojOcena++;
+                    //ODOBRAVANJE KOMENTARA
+                    if (userRole == "admin" || obj.Domacin.Id == userId) {//ako je upitanju admin ili domacin onda se prikazuju svi komentari
+
+
+                        if (val.Status == "0") {    //ako komentar nije odobren prikazi dugmice za odobravanje/uklanjanje
+                            $("#komentari").prepend(`
+
+                            <div class="komentar ohidden">
+                                <div class="fleft">${val.Korisnik.KorisnickoIme}<br />Ocena: ${val.Ocena}</div>
+
+                                <div class="fright">
+                                    <div class="fleft button form-control" onclick="odobri(${val.Id})">Odobri</div>
+                                    <div class="fleft button form-control" onclick="zabrani(${val.Id})">Zabrani</div>
+                                </div>
+
+                                <div class="fright">${val.TekstKomentara}</div>
+                            </div>
+                        `);
+                        } else {    //u suprotnom prikazati samo komentare
+                            $("#komentari").prepend(`
+
+                            <div class="komentar ohidden">
+                                <div class="fleft">${val.Korisnik.KorisnickoIme}<br />Ocena: ${val.Ocena}</div>
+                                <div class="fright">${val.TekstKomentara}</div>
+                            </div>
+                        `);
+                        }
+
+                    }//komentari se prikazuju ulogovanim korisnicima sa statusom 1 (odobreni od strane domacina)
+                    else if (val.Status == "1" && userId != undefined && userId != null) {
+                        $("#komentari").prepend(`
+
+                            <div class="komentar ohidden">
+                                <div class="fleft">${val.Korisnik.KorisnickoIme}<br />Ocena: ${val.Ocena}</div>
+                                <div class="fright">${val.TekstKomentara}</div>
+                            </div>
+                        `);
+                    }
+
+
+
+                });
+
+
+                $("#data h2").html(obj.Naziv);
+
+                $("#karakteristike").append("<div>Tip aprtmana:<span>" + obj.TipApartmana + "</span></div>");
+                $("#karakteristike").append("<div>Broj prostorija: <span>" + obj.BrojSoba + "</span></div>");
+                $("#karakteristike").append("<div>Broj osoba: <span>" + obj.BrojGostiju + "</span></div>");
+
+
+                $("#domacin").append("<div>Ime i prezime: <span>" + obj.Domacin.Ime + " " + obj.Domacin.Prezime + "<span></div>");
+                $("#domacin").append("<div>Korisnicko ime: <span>" + obj.Domacin.KorisnickoIme + "<span></div>");
+                $("#domacin").append("<div>Pol: <span>" + obj.Domacin.Pol + "<span></div>");
+
+
+                $("#karakteristike2").append("<div>Prijava: <span>" + obj.VremeZaPrijavu + "<span></div>");
+                $("#karakteristike2").append("<div>Odjava: <span>" + obj.VremeZaOdjavu + "<span></div>");
+                $("#karakteristike2").append("<div>Lokacija: <span>" + obj.Lokacija.Adresa.UlicaBroj + ", " + obj.Lokacija.Adresa.NaseljenoMesto + "<span></div>");
+                $("#karakteristike2").append("<div>Ocena: <span>" + ((ocena / brojOcena).toFixed(2) == NaN) ? "" : (ocena / brojOcena).toFixed(2) + "<span></div>");
+                $("#karakteristike2").append("<div id='cena'>Cena po noci: <span>" + obj.CenaPoNoci + "e<span></div>");
+
+            },
+
+            error: function (jqXHR) {
+
+            }
+
+
+        });
+    });
+
+
+    //skripta za komentare
+    $("#textKomentara").click(function () {
+        this.innerHTML = "";
+    });
+
+
+    //rezervacija + comment
+
+    $(document).ready(function () {
+        uspesnoValidirano = false;
+
+
+        //RACUNANJE CENE
+
+
+
+        $("#brDana").change(function () {
+            var dana = parseInt($("#brDana").val());
+            var kompletDatum = $("#datepicker").val();
+
+            var datum = kompletDatum.split(' ')[0];
+
+
+            var slobodniDatumiIzBaze = apartman.DostupnostPoDatumima;
+
+            if ($("#brDana").val() != "x" && kompletDatum != "Od") {
+
+
+                var danUnedelji = kompletDatum.split(' ')[1];
+
+
+                
+
+
+                var dani = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+                var pocetniDan = 0; //pozicija u nizu dana
+
+                for (pocetniDan = 0; pocetniDan < 7; pocetniDan++) {
+                    if (dani[pocetniDan] == danUnedelji) {
+                        break;
+                    }
+                }
+
+                var daniSaPopustom = 0;
+                ukupno = 0.0;
+
+
+
+
+                var cenaSobe = parseFloat(apartman.CenaPoNoci);
+
+
+                var pocetniDatum = new Date(datum); //datum pocetka rezervacije
+                var zakljucniDatum = pocetniDatum;                 //datum kraja rezervacije
+
+                var praznikBool = false;
+                for (var i = 0; i < dana; i++) {
+
+
+                    praznikBool = false;
+
+                    //kada ga stavi na false vise ovde ne ulazi, samim tim je neuspesno
+                    uspesnoValidirano = false;
+                    $.each(apartman.DostupnostPoDatumima, function (key, val) { //listamo slobodne datume i ako se tu ne nalazi jedan od selektovanih ide false
+
+                        var d = new Date(val.Dan);
+                        if (d.getTime() === zakljucniDatum.getTime()) {
+                            uspesnoValidirano = true;
+                            return false;
+                        }
+                    });
+                    if (uspesnoValidirano == false) {
+                        break;
+                    }
+
+
+
+                    //za svaki dan racunamo da li je praznik, ako jeste dodajemo 5%, kasnije ako je vikend od toga skidamo 10
+                    $.each(praznici, function (key, val) {
+                        var praznik = new Date(val.Dan);
+                        if (zakljucniDatum.getTime() == praznik.getTime()) {
+                            ukupno = ukupno + (cenaSobe * 1.05);
+                            praznikBool = true;
+                            return false;   //ako 
+                        }
+
+                    });
+
+
+
+                    if (!praznikBool) {
+                        //racunanje cene za svaki dan
+                        if (pocetniDan == 0 || pocetniDan == 6) {
+                            ukupno = ukupno + (cenaSobe * 0.9);   //uvecaj cenu sa popustom 10%
+                        } else {
+                            ukupno = ukupno + cenaSobe;         //bez popusta
+                        }
+                    }
+                    
+                    pocetniDan++;
+                    pocetniDan = pocetniDan % 7;
+                    zakljucniDatum.setDate(zakljucniDatum.getDate() + 1);
+                }
+
+                //provera da li su datumi slobodni
+
+
+
+
+
+                if (uspesnoValidirano) {
+                    $("#ukupna-cena").html("Ukupna cena: " + ukupno.toFixed(2) + " e");
+                } else {
+                    $("#ukupna-cena").html("Datumi ne odgovaraju opsegu!");
+                }
+
+
+
+            }
+
+        });
+
+
+
+
+
+        //ne prikazuj komentare neulogovanim korisnicima i ne dozvoli komentarisanje i rezervaciju
+        if (sessionStorage.getItem("userId") == undefined || sessionStorage.getItem("userId") == null) {
+            $("#komentari").css({ 'display': 'none' });
+            $("#rezervacija").css({ 'display': 'none' });
+            $("#data").append("<div>Da biste videli komentare za apartman i mogli da rezervisete prijavite se na <a href='http://localhost:57327/Home/Login'>OVOM LINKU</a>!</div>");
+        } else {
+
+
+            //sekcija za rezervaciju i komentare prikazuje se samo ako je korisnik ulogovan
+            $('body').on('click', '#rezervisi-dugme', function () {
+                var datum = $("#datepicker").val();
+                var brDana = $("#brDana").val();
+
+
+                if (datum != "Od" && brDana != "*" && brDana != "Broj dana" && uspesnoValidirano) {
+
+
+
+                    var errorDiv = $(".alert");
+                    var message = $(".alert > div");
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'http://localhost:57327/api/rezervacije',
+                        dataType: 'json',
+                        data: {
+                            RezervisaniApartman: apartman.Id,
+                            PocetniDatumRezervacije: datum,
+                            BrojNocenja: brDana,
+                            UkupnaCena: ukupno,     //iz funkcije gore
+                            Gost: {
+                                Id: sessionStorage.getItem("userId")
+                            },
+                            Status: "KREIRANA"
+                        },
+                        success: function () {
+
+                            errorDiv.removeClass("alert-danger");
+                            errorDiv.addClass('alert-success');
+                            message.text('Uspesno kreirana rezervacija!');
+
+                            //errorDiv.css({ 'display': 'block' });
+                            errorDiv.fadeIn(1500);
+
+                            //gasi obavestenje
+                            setTimeout(function () {
+                                //errorDiv.css({ 'display': 'none' });
+                                //errorDiv.fadeOut(3000);
+                                window.location.reload();
+                            }, 5000);
+
+                        },
+
+                        error: function (jqXHR) {
+                            errorDiv.removeClass('alert-success');
+                            errorDiv.addClass("alert-danger");
+                            message.text('Greska pri prosledjivanju podataka forme!');
+
+                            //errorDiv.css({ 'display': 'block' });
+                            errorDiv.fadeIn(1500);
+
+                            //gasi obavestenje
+                            setTimeout(function () {
+                                //errorDiv.css({ 'display': 'none' });
+                                errorDiv.fadeOut(3000);
+                            }, 5000);
+
+                        }
+
+
+                    });
+
+
+
+                } else {
+                    alert("Unesite pocetni datum i broj dana!");
+                }
+
+
+            });
+
+        }
+
+
+
+
+
+
+        $('body').on('click', '#komentar-dugme', function () {
+            var ocena = $("#ocena").val();
+            var txt = $("#textKomentara").val();
+
+
+            if (ocena != "*" && txt != "" && txt != "Ostavi komentar...") {
+
+
+                var errorDiv = $(".alert");
+                var message = $(".alert > div");
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:57327/api/oglasi/Komentar',
+                    dataType: 'json',
+                    data: {
+                        Korisnik: {
+                            Id: sessionStorage.getItem("userId")
+                        },
+                        Apartman: apartman,
+                        TekstKomentara: txt,
+                        Ocena: ocena,
+                        Status: "0"
+                    },
+                    success: function () {
+
+                        errorDiv.removeClass("alert-danger");
+                        errorDiv.addClass('alert-success');
+                        message.text('Uspesno ste se registrovali na sistem!');
+
+                        //errorDiv.css({ 'display': 'block' });
+                        errorDiv.fadeIn(1500);
+
+                        //gasi obavestenje
+                        setTimeout(function () {
+                            //errorDiv.css({ 'display': 'none' });
+                            //errorDiv.fadeOut(3000);
+                            window.location.reload();
+                        }, 5000);
+
+                    },
+
+                    error: function (jqXHR) {
+                        errorDiv.removeClass('alert-success');
+                        errorDiv.addClass("alert-danger");
+                        message.text('Greska pri prosledjivanju podataka forme!');
+
+                        //errorDiv.css({ 'display': 'block' });
+                        errorDiv.fadeIn(1500);
+
+                        //gasi obavestenje
+                        setTimeout(function () {
+                            //errorDiv.css({ 'display': 'none' });
+                            errorDiv.fadeOut(3000);
+                        }, 5000);
+
+                    }
+
+
+                });
+
+
+
+            } else {
+                alert("Unesite ocenu i komentar!");
+            }
+
+
+        });
+
+
+
+
+    });
+
+</script>
+
+
+
+<!--rezervacije-->
+
+<script>
+
+    $(document).ready(function () {
+
+
+        
+
+        var id = window.location.pathname.split("/")[3];
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:57327/api/rezervacije?idApartmana=' + id,
+            dataType: 'json',
+
+            success: function (obj) {
+
+                $.each(obj, function (i, val) {
+
+                    //if (val.Status != "PRIHVACENA" && val.Status != "ODBIJENA") {
+
+                    
+                        setTimeout(function () {
+
+
+                            if (val.Gost.Id == sessionStorage.getItem("userId")) {
+                                if (val.Status != "PRIHVACENA" && val.Status != "ODBIJENA" && val.Status != "ODUSTANAK" && val.Status!="ZAVRSENA") {
+                                    $("#rezervacije").append(`
+                                <div class="rez fleft">
+    
+                                    <div class="apartman-podaciApartmana">
+                                        <h3>${apartman.Naziv} (${val.Status})</h3>
+                                    </div>
+                                    <div class="opsti-podaci">
+                                        <div class="ohidden"><span class="fleft">Pocetak rezervacije:</span> <span class="fright">${val.PocetniDatumRezervacije}</span></div>
+                                        <div class="ohidden"><span class="fleft">Broj nocenja:</span>        <span class="fright">${val.BrojNocenja}</span></div>
+                                        <div class="ohidden"><span class="fleft">Ukupna cena:</span>         <span class="fright">${val.UkupnaCena}             </span></div>
+                                    </div>
+                                    <div class="korisnik-podaci">
+                                        <div class="ohidden"><span class="fleft">Ime:</span> <span class="fright">${val.Gost.Ime}</span></div>
+                                        <div class="ohidden"><span class="fleft">Prezime:</span>        <span class="fright">${val.Gost.Prezime}</span></div>
+                                        <div class="ohidden"><span class="fleft">Korisnicko ime:</span>         <span class="fright">${val.Gost.KorisnickoIme}             </span></div>
+                                        <div class="ohidden"><span class="fleft">Pol:</span>         <span class="fright">${val.Gost.Pol}             </span></div>
+                                        <div class="ohidden"><span class="fleft">Uloga:</span>         <span class="fright">${val.Gost.Uloga}             </span></div>
+                                    </div>
+                                    <div class="ohidden dugmici">
+                                        <div class="fleft button form-control" id="odustani" onclick="odustaniOdRezervacije(${val.Id})">Odustani</div>
+                                    </div>
+                                </div>
+                                `);
+                                } else {        //bez dugmica ako je poso zavrsen
+                                    $("#rezervacije").append(`
+                                <div class="rez fleft">
+    
+                                    <div class="apartman-podaciApartmana">
+                                        <h3>${apartman.Naziv} (${val.Status})</h3>
+                                    </div>
+                                    <div class="opsti-podaci">
+                                        <div class="ohidden"><span class="fleft">Pocetak rezervacije:</span> <span class="fright">${val.PocetniDatumRezervacije}</span></div>
+                                        <div class="ohidden"><span class="fleft">Broj nocenja:</span>        <span class="fright">${val.BrojNocenja}</span></div>
+                                        <div class="ohidden"><span class="fleft">Ukupna cena:</span>         <span class="fright">${val.UkupnaCena}             </span></div>
+                                    </div>
+                                    <div class="korisnik-podaci">
+                                        <div class="ohidden"><span class="fleft">Ime:</span> <span class="fright">${val.Gost.Ime}</span></div>
+                                        <div class="ohidden"><span class="fleft">Prezime:</span>        <span class="fright">${val.Gost.Prezime}</span></div>
+                                        <div class="ohidden"><span class="fleft">Korisnicko ime:</span>         <span class="fright">${val.Gost.KorisnickoIme}             </span></div>
+                                        <div class="ohidden"><span class="fleft">Pol:</span>         <span class="fright">${val.Gost.Pol}             </span></div>
+                                        <div class="ohidden"><span class="fleft">Uloga:</span>         <span class="fright">${val.Gost.Uloga}             </span></div>
+                                    </div>
+                                
+                                </div>
+                                `);
+                                }
+                                
+                            } else if (apartman.Domacin.Id == sessionStorage.getItem("userId")) {
+                                if (val.Status != "ODBIJENA" && val.Status != "ODUSTANAK" && val.Status!="ZAVRSENA") {
+                                    $("#rezervacije").append(`
+                                <div class="rez fleft">
+    
+                                    <div class="apartman-podaciApartmana">
+                                        <h3>${apartman.Naziv} (${val.Status})</h3>
+                                        
+                                    </div>
+                                    <div class="opsti-podaci">
+                                        <div class="ohidden"><span class="fleft">Pocetak rezervacije:</span> <span class="fright">${val.PocetniDatumRezervacije}</span></div>
+                                        <div class="ohidden"><span class="fleft">Broj nocenja:</span>        <span class="fright">${val.BrojNocenja}</span></div>
+                                        <div class="ohidden"><span class="fleft">Ukupna cena:</span>         <span class="fright">${val.UkupnaCena}             </span></div>
+                                    </div>
+                                    <div class="korisnik-podaci">
+                                        <div class="ohidden"><span class="fleft">Ime:</span> <span class="fright">${val.Gost.Ime}</span></div>
+                                        <div class="ohidden"><span class="fleft">Prezime:</span>        <span class="fright">${val.Gost.Prezime}</span></div>
+                                        <div class="ohidden"><span class="fleft">Korisnicko ime:</span>         <span class="fright">${val.Gost.KorisnickoIme}             </span></div>
+                                        <div class="ohidden"><span class="fleft">Pol:</span>         <span class="fright">${val.Gost.Pol}             </span></div>
+                                        <div class="ohidden"><span class="fleft">Uloga:</span>         <span class="fright">${val.Gost.Uloga}             </span></div>
+                                    </div>
+                                    <div class="ohidden dugmici">
+                                            <div class="fleft form-control button" id="odobri" onclick="odobriPonudu(${val.Id},${apartman.Id})">Odobri</div>
+                                            <div class="fleft form-control button" id="odbij" onclick="odbijPonudu(${val.Id})">Odbij</div>
+                                            <div class="fleft form-control button" id="zavrsi" onclick="zavrsiPonudu(${val.Id})">Zavrsena</div>
+                                        </div>
+                                </div>
+                                `); 
+                                } else {    //bez dugmica ako je poso zavrsen
+                                    $("#rezervacije").append(`
+                                <div class="rez fleft">
+    
+                                    <div class="apartman-podaciApartmana">
+                                        <h3>${apartman.Naziv} (${val.Status})</h3>
+                                        
+                                    </div>
+                                    <div class="opsti-podaci">
+                                        <div class="ohidden"><span class="fleft">Pocetak rezervacije:</span> <span class="fright">${val.PocetniDatumRezervacije}</span></div>
+                                        <div class="ohidden"><span class="fleft">Broj nocenja:</span>        <span class="fright">${val.BrojNocenja}</span></div>
+                                        <div class="ohidden"><span class="fleft">Ukupna cena:</span>         <span class="fright">${val.UkupnaCena}             </span></div>
+                                    </div>
+                                    <div class="korisnik-podaci">
+                                        <div class="ohidden"><span class="fleft">Ime:</span> <span class="fright">${val.Gost.Ime}</span></div>
+                                        <div class="ohidden"><span class="fleft">Prezime:</span>        <span class="fright">${val.Gost.Prezime}</span></div>
+                                        <div class="ohidden"><span class="fleft">Korisnicko ime:</span>         <span class="fright">${val.Gost.KorisnickoIme}             </span></div>
+                                        <div class="ohidden"><span class="fleft">Pol:</span>         <span class="fright">${val.Gost.Pol}             </span></div>
+                                        <div class="ohidden"><span class="fleft">Uloga:</span>         <span class="fright">${val.Gost.Uloga}             </span></div>
+                                    </div>
+
+                                </div>
+                                `);
+                                }
+                            }
+                            
+
+                        }, 100);
+
+                        
+                            
+                        
+
+                    //}
+
+                    
+
+                });
+
+
+                
+
+
+            },
+
+            error: function (jqXHR) {
+
+            }
+
+
+        });
+    });
+
+</script>

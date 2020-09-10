@@ -1,0 +1,279 @@
+﻿
+@{
+    ViewBag.Title = "Profil";
+}
+
+<div id="registration" class="jumbotron ohidden">
+
+    <h2>Profil</h2>
+
+    <div id="login-fields" class="ohidden">
+        <div class="fleft">
+            <label>Ime:</label>
+            <input id="name" type="text" class="form-control" name="name" />
+
+            <label>Prezime:</label>
+            <input id="surname" class="form-control" name="surname" />
+
+            <label>Pol:</label>
+            <input id="gender" class="form-control" name="gender" />
+        </div>
+        <div class="fright">
+            <label>Korisnicko ime:</label>
+            <input id="username" type="text" class="form-control" name="username" />
+
+            <label>Lozinka:</label>
+            <input id="password" type="password" class="form-control" name="password" />
+
+            <label>Potvrdi lozinku:</label>
+            <input id="re-password" type="password" class="form-control" name="re-password" />
+
+        </div>
+
+    </div>
+
+    <input id="btnLogin" type="submit" class="form-control button fright" value="Izmeni podatke" />
+
+
+    <h2 class="cboth">Moji apartmani</h2>
+    <div id="mojiOglasi">
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var oglasi = $("#mojiOglasi");
+
+            
+                oglasi.empty(); //cistimo sve do sada
+
+                
+
+                var errorDiv = $(".alert");
+                var message = $(".alert > div");
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:57327/api/oglasi/' + sessionStorage.getItem("userId"),
+                    dataType: 'json',
+                    /*
+                    headers: {
+                        'Authorization': (sessionStorage.getItem('token') != undefined) ? sessionStorage.getItem('token') : '',    //convert to base 64
+                    },*/
+                    success: function (data) {
+
+                        $.each(data, function (index, val) {    //index i sam objekat
+
+                            //multiline string radi boljeg pregleda
+                            oglasi.append(`
+                                <div class="apartman ohidden" onclick='zakazi(${val.Id})'">
+
+                                            <div class="apartman-slika fleft">
+                                                
+                                                <img src="${val.Slike[0].Path + val.Slike[0].Name}" width="240" />
+                                                
+                                            </div>
+
+                                            <div class="apartman-podaci fleft ohidden">
+
+                                                <div class="apartman-sekcija fleft">
+                                                    <h3>${val.Naziv}</h3>
+                                                    <span>Soba</span>
+                                                    <hr />
+                                                    <div><img src="/img/lokacija.png" height="15" />${val.Lokacija.Adresa.UlicaBroj}</div>
+                                                    <hr />
+
+                                                    <span>Ocena: ${val.Ocena}</span>
+                                                </div>
+                                                <div class="apartman-sekcija fleft">
+
+
+                                                    <h4>Lista sadrzaja:</h4>
+                                                    <span class="listaSadrzaja">
+
+                                                    </span>
+
+                                                </div>
+                                                <div class="apartman-sekcija fleft">
+                                                    <div>Cena: ${val.CenaPoNoci}e</div>
+                                                    <div>Broj soba: ${val.BrojSoba}</div>
+                                                    <div>Broj gostiju: ${val.BrojGostiju}</div>
+
+
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+
+
+                            `);
+                            $.each(val.ListaSadrzaja, function (index, value) {
+                                $(".apartman:last-of-type .listaSadrzaja").append(`
+                                <span>${value.Naziv}</span>
+                            `);
+                            });
+
+
+                            //dodajem skriptu za dugmice
+                            var skripta = document.createElement("script");
+                            skripta.innerHTML = `
+      
+                                $(".apartman-sekcija:last-of-type #zakazi").remove();
+                                $(".apartman-sekcija:last-of-type a").remove();
+                                if (sessionStorage.getItem("username") != undefined && sessionStorage.getItem("username") != null) {
+                                    $(".apartman-sekcija:last-of-type").append('<span class="button form-control" id="zakazi" onclick="zakazi(${val.Id})">Zakazi</span>');
+                                } else {
+                                    $(".apartman-sekcija:last-of-type").append('<a href="http://localhost:57327/Home/Login">Prijavi se</a>');
+                                }
+
+
+
+                                function zakazi(id) {
+                                    window.location.assign("http://localhost:57327/Home/Apartman/"+id);
+                                }
+
+                                
+                            `;
+
+
+                            document.body.appendChild(skripta);
+
+
+
+
+                        });
+                        
+
+
+                    },
+
+                    error: function (jqXHR) {
+
+                        
+
+
+                    }
+
+
+                });
+
+       
+
+        });
+    </script>
+
+
+    <div class="alert ohidden" role="alert">
+        <div class="fleft">
+            <!--ovde ide poruka o gresci-->
+        </div>
+        <button type="button" class="close fright" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div id="error-message">
+
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        //id-evi i klase se isto zovu, ovo je skripta za profil
+        $('body').on('click', '#btnLogin', function () {
+            var user1 = $("#username").val();
+            var name1 = $("#name").val();
+            var surname1 = $("#surname").val();
+            var gender1 = $("#gender").val();
+
+            var pass1 = $("#password").val();
+            var rePass1 = $("#re-password").val();
+
+
+            if (pass1 == rePass1 && rePass1 == sessionStorage.getItem("password")) {
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'http://localhost:57327/api/profil',
+                    dataType: 'json',
+                    data: {
+                        Id: parseInt(sessionStorage.getItem("userId")),
+                        KorisnickoIme: user1,
+                        Lozinka: pass1,
+                        Ime: name1,
+                        Prezime: surname1,
+                        Pol: gender1,
+                        Uloga: "admin",
+                        ApartmaniZaIzdavanje: null,
+                        IznajmljeniApartmani: null,
+                        ListaRezervacija: null
+                    },
+                    success: function (izmenjenKorisnik) {
+                        sessionStorage.setItem("username", izmenjenKorisnik.KorisnickoIme);
+                        window.location.reload();
+                    }
+                    
+
+
+                });
+            } //end of if
+
+        });
+
+   
+
+        //prvo popuniti postojecim podacima
+
+        var user = $("#username");
+        var name = $("#name");
+        var surname = $("#surname");
+        var gender = $("#gender");
+
+
+
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:57327/api/profil/' + sessionStorage.getItem('userId'),
+            dataType: 'json',
+
+            success: function (obj) {
+                user.val(obj.KorisnickoIme);
+                name.val(obj.Ime);
+                surname.val(obj.Prezime);
+                gender.val(obj.Pol);
+                checkPassword = obj.Lozinka;
+            },
+
+            error: function (jqXHR) {
+
+                if (jqXHR.status == '401') {
+
+
+                }
+
+
+            }
+
+
+        });
+
+
+    });
+
+
+
+
+    $(".close").click(function () {
+        $(".close").parent().css({ "display": "none" });
+    });
+
+
+</script>
+

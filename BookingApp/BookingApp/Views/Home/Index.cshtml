@@ -1,0 +1,549 @@
+﻿
+<!--Prikupljam podatke za filtere-->
+<script>
+    //prikaz svih aktivnih oglasa, ono sto se vidi kada se tek otvori sajt
+    $(document).ready(function () {
+
+
+        function loadSearch() {
+
+        
+            var target1 = $("#naseljenoMesto");
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:57327/api/pretraga/adr',
+                dataType: 'json',
+                success: function (obj) {
+
+                    $.each(obj, function (index, val) {
+
+
+                        target1.append(`
+                            <option val="${val}">${val}</option>       
+                        `);
+                    });
+                 
+
+                },
+
+                error: function (jqXHR) {
+
+                }
+
+
+            });
+
+            var target2 = $("#sadrzaj")
+
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:57327/api/pretraga/itm',
+                dataType: 'json',
+                success: function (obj) {
+
+                    $.each(obj, function (index, val) {
+
+
+                        target2.append(`
+                            <option val="${val}">${val}</option>       
+                        `);
+                    });
+
+
+                },
+
+                error: function (jqXHR) {
+
+                }
+
+
+            });
+
+        }
+
+        loadSearch();
+
+
+        items = []; //selektovani itemi za pretragu
+        itemCount = 0;
+       
+        
+        
+    });
+
+    
+    
+
+</script>
+
+
+
+<div id="filter">
+
+
+
+    <select class="form-control" id="naseljenoMesto">
+        <option value="*">Izaberi naseljeno mesto</option>
+
+    </select>
+
+    <input id="datepicker" class="fleft form-control" value="slobodno od" />
+    <input id="datepicker1" class="fleft form-control" value="slobodno do" />
+
+
+    <select class="form-control" id="osoba">
+        <option value="*">Osoba</option>
+        @for (int i = 0; i <= 50; i++)
+        {
+            <option value="@i">@i</option>
+        }
+
+    </select>
+
+
+
+
+
+    <select class="form-control" id="cenaOd">
+        <option value="*">Cena od</option>
+        @for (int i = 0; i <= 50; i++)
+        {
+            <option value="@i">@i</option>
+        }
+
+    </select>
+
+    <select class="form-control" id="cenaDo">
+        <option value="*">Cena do</option>
+        @for (int i = 0; i <= 50; i++)
+        {
+            <option value="@i">@i</option>
+        }
+
+    </select>
+
+
+    <select class="form-control" id="sobaOd">
+        <option value="*">Soba od</option>
+        @for (int i = 0; i <= 50; i++)
+        {
+            <option value="@i">@i</option>
+        }
+
+    </select>
+
+    <select class="form-control" id="sobaDo">
+        <option value="*">Soba do</option>
+        @for (int i = 0; i <= 50; i++)
+        {
+            <option value="@i">@i</option>
+        }
+
+    </select>
+
+
+    <select class="form-control" id="sortCena">
+        <option value="*">Sortiranje po ceni</option>
+        <option value="r">Rastuce</option>
+        <option value="o">Opadajuce</option>
+
+    </select>
+
+    <select class="form-control" id="tipApartmana">
+        <option value="*">Tip apartmana</option>
+        <option value="soba">Soba</option>
+        <option value="apartman">Apartman</option>
+        <option value="kuca">Kuca</option>
+
+    </select>
+
+    <select class="form-control" id="statusApartmana">
+        <option value="true">Status apartmana</option>
+        <option value="true">Aktivan</option>
+        <option value="false">Neaktivan</option>
+    </select>
+
+    <select class="form-control" id="sadrzaj">
+        <option value="*">Sadrzaj apartmana</option>
+
+    </select>
+
+    <div id="container-itema" class="fleft ohidden">
+        
+    </div>
+    <!--
+    <input id="user" class="form-control cred" />
+    <input id="pass" class="form-control cred" />
+    -->
+
+    <input type="submit" class="form-control button" id="filter-btn" value="Pretrazi" />
+</div>
+
+
+
+<div id="apartmani">
+    
+
+
+
+    
+</div>
+<!--skripta za dugmice apartmana-->
+
+
+<div class="alert ohidden" role="alert">
+    <div class="fleft">
+        asd
+    </div>
+    <button type="button" class="close fright" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+
+
+
+
+
+<script>
+
+    function ukloniItem(id) {
+
+        $("#id" + id).remove();
+        
+        items.splice(id, 1);
+        itemCount--;
+        $("#container-itema").empty();
+
+
+        for (var i = 0; i < itemCount; i++) {
+            $("#container-itema").append(`
+                <span class="stavka" id="${id}">${items[i]}<span onclick="ukloniItem(${i})" class="glyphicon glyphicon-remove"></span></span>
+            `);
+        }
+            
+        
+    }
+
+    $("#sadrzaj").change(function () {
+
+        var naziv = $("#sadrzaj").val();
+
+   
+        var index = items.indexOf(naziv);
+
+        if (naziv != "*" && index == -1) {
+            items[itemCount] = naziv;
+
+            $("#container-itema").append(`
+                    <span class="stavka" id="id${itemCount}">${naziv}<span onclick="ukloniItem(${itemCount++})" class="glyphicon glyphicon-remove"></span></span>
+                `);
+
+        }
+    });
+
+
+
+
+
+
+
+    $(document).ready(function () {
+
+        var oglasi = $("#apartmani");
+
+        $('body').on('click', '#filter-btn', function () {
+            oglasi.empty(); //cistimo sve do sada
+
+            var errorDiv = $(".alert");
+            var message = $(".alert > div");
+
+            //prikupljanje podataka iz filter forme
+            var datumStart = $("#datepicker").val();
+            var datumEnd = $("#datepicker1").val();
+
+            var naselje = $("#naseljenoMesto").val();
+            var osoba = $("#osoba").val();
+            var cenaO = $("#cenaOd").val();
+            var cenaD = $("#cenaDo").val();
+            var sobaO = $("#sobaOd").val();
+            var sobaD = $("#sobaDo").val();
+
+            var sortCena = $("#sortCena").val();
+            var tipApartmana = $("#tipApartmana").val();
+            var statusApartmana = $("#statusApartmana").val();
+            
+            $.ajax({
+                type: 'Put',
+                url: 'http://localhost:57327/api/pretraga',
+                dataType: 'json',
+                data: {
+                    odDatuma: datumStart,
+                    doDatuma: datumEnd,
+                    naseljenoMesto: naselje,
+                    cenaOd: cenaO,
+                    cenaDo: cenaD,
+                    sobaOd: sobaO,
+                    sobaDo: sobaD,
+                    osoba: osoba,
+                    tip: tipApartmana,
+                    status: statusApartmana,
+                    sadrzaj: items,
+                    sort: sortCena
+                },
+                success: function (obj) {
+                    
+                    $.each(obj, function (index, val) {
+                        oglasi.append(`
+
+                                        <div class="apartman ohidden">
+
+                                            <div class="apartman-slika fleft">
+
+                                                <img src="${val.Slike[0].Path + val.Slike[0].Name}" width="240" />
+
+                                            </div>
+
+                                            <div class="apartman-podaci fleft ohidden">
+
+                                                <div class="apartman-sekcija fleft">
+                                                    <h3>${val.Naziv}</h3>
+                                                    <span>${val.TipApartmana}</span>
+                                                    <hr />
+                                                    <div><img src="/img/lokacija.png" height="15" />${val.Lokacija.Adresa.UlicaBroj}</div>
+                                                    <hr />
+
+                                                    <span>Ocena: ${val.Ocena}</span>
+                                                </div>
+                                                <div class="apartman-sekcija fleft">
+
+
+                                                    <h4>Lista sadrzaja:</h4>
+                                                    <span class="listaSadrzaja">
+
+                                                    </span>
+
+                                                </div>
+                                                <div class="apartman-sekcija fleft">
+                                                    <div>Cena: ${val.CenaPoNoci}e</div>
+                                                    <div>Broj soba: ${val.BrojSoba}</div>
+                                                    <div>Broj gostiju: ${val.BrojGostiju}</div>
+
+                                                    <span class="button form-control" id="zakazi" onclick="zakazi(${val.Id})">Pogledaj</span>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                `);
+
+                        $.each(val.ListaSadrzaja, function (index, value) {
+                            $(".apartman:last-of-type .listaSadrzaja").append(`
+                                    <span>${value.Naziv}</span>
+                                `);
+                        });
+
+                        $.each(val.Slike, function (index, value) {
+                            if (val.Slike[0] != undefined) {
+                                $(".apartman-slika:last-of-type").append(`
+                                        <img src="${val.Slike[0].Path + val.Slike[0].Name}" width="340" />
+                                    `);
+                            } else {
+                                $(".apartman-slika:last-of-type").append(`
+                                        <img src="" width="340" />
+                                    `);
+                            }
+
+                        });
+
+                        //dodajem skriptu za dugmice
+                        var skripta = document.createElement("script");
+                        skripta.innerHTML = `
+                            function zakazi(id) {
+                                window.location.assign("http://localhost:57327/Home/Apartman/"+id);
+                            }
+                        `;
+
+                        document.body.appendChild(skripta);
+
+                    });
+
+                    //prikazi poruku
+                    errorDiv.removeClass("alert-danger");
+                    errorDiv.addClass('alert-success');
+                    message.text('Pretraga uspesna!');
+
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        errorDiv.fadeOut(3000);
+                    }, 5000);
+
+                },
+                error: function (jqXHR) {
+
+                    if (jqXHR.status == '401') {
+                        errorDiv.removeClass('alert-success');
+                        errorDiv.addClass("alert-danger");
+                        message.text('Pretraga neuspesna!');
+
+                        errorDiv.fadeIn(1500);
+
+                        //gasi obavestenje
+                        setTimeout(function () {
+                            errorDiv.fadeOut(3000);
+                        }, 5000);
+
+                    }
+
+
+                }
+
+
+            });
+
+        });
+
+    });
+
+
+
+
+    $(".close").click(function () {
+        $(".close").parent().css({ "display": "none" });
+    });
+
+
+    $('#datepicker').datepicker({
+        format: "dd-mmm-yy"
+    });
+    $('#datepicker1').datepicker({
+        format: "dd-mmm-yy",
+    });
+
+    $(document).ready(function () {
+
+        //metode za tekst u okviru datuma
+        $("#datepicker").focusout(function () {
+            if ($('#datepicker').val() == "" || $('#datepicker').val() == undefined)
+                $('#datepicker').val("slobodno od");
+
+        });
+        $("#datepicker1").focusout(function () {
+            if ($('#datepicker1').val() == "" || $('#datepicker1').val() == undefined)
+                $('#datepicker1').val("slobodno do");
+        });
+    });
+</script>
+
+
+<!--svi aktivni apartmani-->
+<script>
+        //prikaz svih aktivnih oglasa, ono sto se vidi kada se tek otvori sajt
+        $(document).ready(function () {
+            var oglasi = $("#apartmani");
+
+                var token = (sessionStorage.getItem("token") != null) ? sessionStorage.getItem("token") : "Basic " + btoa("username:password");
+                oglasi.empty(); //cistimo sve do sada
+
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:57327/api/oglasi',
+                    dataType: 'json',
+                    headers: {
+                        "Authorization": token
+                    },
+                    success: function (obj) {
+                        //prolazim kroz sve apartmane
+                        $.each(obj, function (index, val) {    //index i sam objekat
+
+                            //multiline string radi boljeg pregleda
+                            oglasi.append(`
+
+                                            <div class="apartman ohidden">
+
+                                                <div class="apartman-slika fleft">
+
+                                                    <img src="${val.Slike[0].Path + val.Slike[0].Name}" width="240" />
+
+                                                </div>
+
+                                                <div class="apartman-podaci fleft ohidden">
+
+                                                    <div class="apartman-sekcija fleft">
+                                                        <h3>${val.Naziv}</h3>
+                                                        <span>${val.TipApartmana}</span>
+                                                        <hr />
+                                                        <div><img src="/img/lokacija.png" height="15" />${val.Lokacija.Adresa.UlicaBroj}</div>
+                                                        <hr />
+
+                                                        <span>Ocena: ${val.Ocena}</span>
+                                                    </div>
+                                                    <div class="apartman-sekcija fleft">
+
+
+                                                        <h4>Lista sadrzaja:</h4>
+                                                        <span class="listaSadrzaja">
+
+                                                        </span>
+
+                                                    </div>
+                                                    <div class="apartman-sekcija fleft">
+                                                        <div>Cena: ${val.CenaPoNoci}e</div>
+                                                        <div>Broj soba: ${val.BrojSoba}</div>
+                                                        <div>Broj gostiju: ${val.BrojGostiju}</div>
+
+                                                        <span class="button form-control" id="zakazi" onclick="zakazi(${val.Id})">Pogledaj</span>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                    `);
+                            $.each(val.ListaSadrzaja, function (index, value) {
+                                $(".apartman:last-of-type .listaSadrzaja").append(`
+                                        <span>${value.Naziv}</span>
+                                    `);
+                            });
+                            $.each(val.Slike, function (index, value) {
+                                if (val.Slike[0] != undefined) {
+                                    $(".apartman-slika:last-of-type").append(`
+                                            <img src="${val.Slike[0].Path + val.Slike[0].Name}" width="340" />
+                                        `);
+                                } else {
+                                    $(".apartman-slika:last-of-type").append(`
+                                            <img src="" width="340" />
+                                        `);
+                                }
+
+                            });
+
+                            //dodajem skriptu za dugmice
+                            var skripta = document.createElement("script");
+                            skripta.innerHTML = `
+                                    function zakazi(id) {
+                                        window.location.assign("http://localhost:57327/Home/Apartman/"+id);
+                                    }
+                                `;
+
+                            document.body.appendChild(skripta);
+
+                        });
+
+                    },
+
+                    error: function (jqXHR) {
+
+                    }
+
+
+                });
+
+            
+
+        });
+
+</script>

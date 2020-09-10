@@ -1,0 +1,17 @@
+username password name surname gender gost 1
+//ovo je primer komentara koji se preskace, objasnjenje neko
+vulemajstor a vukasin radic muski admin 1
+
+
+
+
+
+
+//ovo su kljucevi za mape
+//api key -> 5Fme0Pxh6-mJ09YH_ST3HrfSGfX_scEstdHoTdUsJf8
+//app id -> 0uNlPBlZ8wNIS1DAi75P
+//app code -> HR1ZEYgM9iHAnkuewHuYaw
+
+//http://autocomplete.geocoder.api.here.com/6.2/suggest.json?app_id=0uNlPBlZ8wNIS1DAi75P&app_code=HR1ZEYgM9iHAnkuewHuYaw&query=Novi+Beograd&beginHighlight=<b>&endHighlight=</b>   
+
+//https://developer.here.com/documentation/places/topics/quick-start-find-text-string.html

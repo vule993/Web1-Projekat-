@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "Registration";
+}
+
+<div id="registration" class="jumbotron ohidden">
+
+    <h2>Registracija</h2>
+
+    <div id="login-fields" class="ohidden">
+        <div class="fleft">
+            <label>Ime:</label>
+            <input id="name" type="text" class="form-control" name="name" />
+
+            <label>Prezime:</label>
+            <input id="surname" class="form-control" name="surname" />
+    
+            <label>Pol:</label>
+            <input id="gender" class="form-control" name="gender" />
+        </div>
+        <div class="fright">
+            <label>Korisnicko ime:</label>
+            <input id="username" type="text" class="form-control" name="username" />
+       
+            <label>Lozinka:</label>
+            <input id="password" type="password" class="form-control" name="password" />
+      
+            <label>Potvrdi lozinku:</label>
+            <input id="re-password" type="password" class="form-control" name="re-password" />
+     
+        </div>
+
+    </div>
+
+    <input id="btnLogin" type="submit" class="form-control button fright" value="Registruj  se" />
+
+
+
+    <div class="alert ohidden" role="alert">
+        <div class="fleft">
+            <!--ovde ide poruka o gresci-->
+        </div>
+        <button type="button" class="close fright" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div id="error-message">
+
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $('body').on('click', '#btnLogin', function () {
+
+            var user = $("#username").val();
+            var pass = $("#password").val();
+            var rePass = $("#re-password").val();
+            var name = $("#name").val();
+            var surname = $("#surname").val();
+            var gender = $("#gender").val();
+
+            var errorDiv = $(".alert");
+            var message = $(".alert > div");
+
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:57327/api/registration',
+                dataType: 'json',
+                data: {
+                    KorisnickoIme:user,
+                    Lozinka:pass,
+                    Ime:name,
+                    Prezime:surname,
+                    Pol:gender,
+                    Uloga:'gost',
+                    ApartmaniZaIzdavanje:null,
+                    IznajmljeniApartmanai:null,
+                    ListaRezervacija:null
+                },
+                success: function () {
+
+                    errorDiv.removeClass("alert-danger");
+                    errorDiv.addClass('alert-success');
+                    message.text('Uspesno ste se registrovali na sistem!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        //errorDiv.fadeOut(3000);
+                        window.location.assign("http://localhost:57327/Home/Login");
+                    }, 5000);
+
+                },
+
+                error: function (jqXHR) {
+                    errorDiv.removeClass('alert-success');
+                    errorDiv.addClass("alert-danger");
+                    message.text('Username i password se ne poklapaju! Prijava neuspesna!');
+
+                    //errorDiv.css({ 'display': 'block' });
+                    errorDiv.fadeIn(1500);
+
+                    //gasi obavestenje
+                    setTimeout(function () {
+                        //errorDiv.css({ 'display': 'none' });
+                        errorDiv.fadeOut(3000);
+                    }, 5000);
+
+                }
+
+
+            });
+
+        });
+
+    });
+
+
+
+
+
+
+
+    $(".close").click(function () {
+        $(".close").parent().css({ "display": "none" });
+    });
+
+
+</script>
+

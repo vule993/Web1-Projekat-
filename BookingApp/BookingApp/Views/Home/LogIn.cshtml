@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Uloguj se";
+}
+
+<div id="login" class="jumbotron ohidden">
+
+    <h2>LogIn</h2>
+
+    <div id="login-fields">
+        <!--<form method="post" action="">-->
+        <label>Username:</label>
+        <input id="usrname" type="text" class="form-control" name="username" />
+    
+        <label>Password:</label>
+        <input id="pasword" type="password" class="form-control" name="password" />
+        <input id="btnLogin" type="submit" class="form-control button fright" value="Uloguj se" />
+        <!--</form>-->
+    </div>
+    
+    
+
+</div>
+<div class="alert ohidden" role="alert">
+    <div class="fleft">
+        asd
+    </div>
+    <button type="button" class="close fright" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+        $('body').on('click', '#btnLogin', function () {
+
+            var usr = $("#usrname").val();
+            var pas = $("#pasword").val();
+            var parameter = pas + ':' + usr;
+
+            var errorDiv = $(".alert");
+            var message = $(".alert > div");
+
+            $.ajax({
+                type: 'post',
+                url: 'http://localhost:57327/api/login',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(parameter),
+              
+                success: function (data) {
+
+                    //ako nije blokiran korisnik napravi mu sesiju
+
+                    if (data == null) {
+                        alert("Wrong username or password!");
+                        return;
+                    }
+
+
+                    if (data.Status != "2") {
+                        //postavljamo sesiju korisnika
+                        sessionStorage.setItem('userId', data.Id);
+                        sessionStorage.setItem('username', data.KorisnickoIme);
+                        sessionStorage.setItem('password', data.Lozinka);
+                        sessionStorage.setItem('uloga', data.Uloga);
+                        sessionStorage.setItem('token', 'Basic ' + btoa(data.KorisnickoIme + ":" + data.Lozinka));
+                        //redirektujemo korisnika na pocetnu stranicu
+                        window.location.assign("Index");
+                    } else {
+                        errorDiv.removeClass('alert-success');
+                        errorDiv.addClass("alert-danger");
+                        message.text('Blokiran si mali!');
+
+                        //errorDiv.css({ 'display': 'block' });
+                        errorDiv.fadeIn(1500);
+
+                        //gasi obavestenje
+                        setTimeout(function () {
+                            //errorDiv.css({ 'display': 'none' });
+                            errorDiv.fadeOut(3000);
+                        }, 5000);
+                    }
+                    
+                },
+
+                error: function (jqXHR) {
+                    alert("error");
+                }
+
+
+            });
+
+        });
+
+    });
+</script>
